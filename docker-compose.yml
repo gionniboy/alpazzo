@@ -1,0 +1,68 @@
+# $Id: docker-compose.yml v.0.5 $ $Date: 2018/04/28 $ $Author: Filippo 'joeyrs' Civiletti <fc@xafe.it> $
+# $Id: docker-compose.yml v.0.5 $ $Date: 2018/04/28 $ $Author: GB 'gionniboy' Pullarà <info@firegarden.co> $
+
+# Docker-compose -- Build LEMP stack based on docker containers.
+
+# General directives.
+# Version 3.6 works with docker-engine >18.02.0
+version: '3.6'
+services:
+
+# Build directives for: NginX
+  lemp-nginx:
+    build:
+      context: ./dockerfiles/nginx
+      dockerfile: Dockerfile
+    container_name: lemp-nginx
+    environment:
+      - TERM=xterm-256color
+    image: alpazzo/nginx:1.12.2
+    links:
+      - lemp-php7
+    networks:
+      - lemp-net
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    volumes:
+      - ./public:/srv
+
+# Build directives for: PHP-FPM
+  lemp-php7:
+    build:
+      context: ./dockerfiles/php7
+      dockerfile: Dockerfile
+    container_name: lemp-php7
+    environment:
+      - TERM=xterm-256color
+    image: alpazzo/php:7.1
+    networks:
+      - lemp-net
+    restart: always
+    volumes:
+      - ./public:/srv
+
+# Build directives for MariaDB
+  lemp-mariadb:
+    build:
+      context: ./dockerfiles/mariadb
+      dockerfile: Dockerfile
+    container_name: lemp-mariadb
+    environment:
+      - "DB_CONFIGFILE=/etc/mysql/my.cnf"
+      - "DB_DATAPATH=/var/lib/mysql"
+      - "DB_ROOTPASS=docker"
+      - "TERM=xterm-256color"
+    image: alpazzo/mariadb:10.1
+    networks:
+      - lemp-net
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./database:/var/lib/mysql
+
+# Build diretives for Docker Network Bridging
+networks:
+  lemp-net:
