@@ -18,8 +18,8 @@ IMPORTANT! CHECK COMPATIBILITY MATRIX COMPOSE/DOCKER !
 [docs.docker.com](https://docs.docker.com/compose/compose-file/#reference-and-guidelines)
 
 * A working computer with Windows/OSX/GNU-Linux
-* [Docker] https://www.docker.io  (project using 18.03.0-ce)
-* [Docker-Compose] https://docs.docker.com/compose (project using docker-compose version 1.20.1, build 5d8c71b)
+* [Docker](https://www.docker.io)  (project using 18.03.0-ce)
+* [Docker-Compose](https://docs.docker.com/compose) (project using docker-compose version 1.20.1, build 5d8c71b)
 
 
 ### Installing
