@@ -3,66 +3,66 @@
 
 # Docker-compose -- Build LEMP stack based on docker containers.
 
-# General directives.
-# Version 3.6 works with docker-engine >18.02.0
-version: '3.6'
+version: '3.7'
+
 services:
 
-# Build directives for: NginX
-  lemp-nginx:
-    build:
-      context: ./dockerfiles/nginx
-      dockerfile: Dockerfile
-    container_name: lemp-nginx
+  nginx:
+    image: nginx:latest
+    container_name: alpazzo-nginx
     environment:
       - TERM=xterm-256color
-    image: alpazzo/nginx:1.12.2
     links:
-      - lemp-php7
+      - php7
     networks:
-      - lemp-net
+      - alpazzo
     ports:
       - "80:80"
       - "443:443"
-    restart: always
+    restart: unless-stopped
     volumes:
-      - ./public:/srv
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./public:/var/www/html
+    depends_on:
+      - mariadb
 
-# Build directives for: PHP-FPM
-  lemp-php7:
+  php7:
     build:
-      context: ./dockerfiles/php7
+      context: .
       dockerfile: Dockerfile
-    container_name: lemp-php7
+    container_name: alpazzo-php7
     environment:
       - TERM=xterm-256color
-    image: alpazzo/php:7.1
     networks:
-      - lemp-net
-    restart: always
+      - alpazzo
+    restart: unless-stopped
     volumes:
-      - ./public:/srv
+      - ./public:/var/www/html
+    depends_on:
+      - mariadb
 
-# Build directives for MariaDB
-  lemp-mariadb:
-    build:
-      context: ./dockerfiles/mariadb
-      dockerfile: Dockerfile
-    container_name: lemp-mariadb
+  mariadb:
+    image: mariadb:10.4
+    container_name: alpazzo-mariadb
     environment:
-      - "DB_CONFIGFILE=/etc/mysql/my.cnf"
-      - "DB_DATAPATH=/var/lib/mysql"
-      - "DB_ROOTPASS=docker"
+      - "MYSQL_ROOT_PASSWORD=password"
       - "TERM=xterm-256color"
-    image: alpazzo/mariadb:10.1
     networks:
-      - lemp-net
+      - alpazzo
     ports:
       - "3306:3306"
-    restart: always
-    volumes:
-      - ./database:/var/lib/mysql
+    restart: unless-stopped
+    # volumes:
+    #   - ./database:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    depends_on:
+      - mariadb
 
 # Build diretives for Docker Network Bridging
 networks:
-  lemp-net:
+  alpazzo:
