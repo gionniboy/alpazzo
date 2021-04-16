@@ -3,10 +3,9 @@ Docker-compose.yml - Directive file for building multiple docker containers.
 
 
 ### Containers specs:
-* Alpine GNU/Linux 3.7
-* Nginx 1.12.2
-* MariaDB 10.1
-* PHP-fpm 7.1.16
+* Nginx
+* MariaDB 10.4
+* PHP-fpm 7.4
 
 
 ## Getting Started
@@ -23,6 +22,7 @@ IMPORTANT! CHECK COMPATIBILITY MATRIX COMPOSE/DOCKER !
 
 
 ### Installing
+
 * Clone this repository and get into the cloned dir;
 * Customize if needed [rootpass, nginx/php conf or whatever...]
 * Open a terminal and build the stack by typing:
@@ -34,15 +34,20 @@ $ docker-compose up -d
 * After the system has been built, open browser pointing to http://127.0.0.1 || http://localhost
 
 ## Authors
+
 * **GB 'gionniboy' Pullarà** - [Firegarden](https://firegarden.co)
 * **Filippo 'joeyrs' Civiletti** - [Xafe](https://www.xafe.it)
 
+
 ## License
+
 This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICENSE) file for details
 
+
 ```
-in the city of alpazzo there exists a male pazzo
-PLEASE GIVE A PIECE OF FAME TO THIS POOR CRAZY LAME
+in the city of ALPAZZO there exists a MALE PAZZO
+please give a PIECE OF FAME to this poor CRAZY LAME
 ```
+
 
 Thanks to [piger](https://github.com/piger) and [buildazzo tool](https://github.com/piger/buildazzo) to inspired us the name for this tool.
