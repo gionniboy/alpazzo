@@ -3,17 +3,16 @@
 
 # Docker-compose -- Build LEMP stack based on docker containers.
 
-version: '3.7'
+version: "3.7"
 
 services:
-
   nginx:
-    image: nginx:latest
+    image: nginx:1.25-alpine
     container_name: alpazzo-nginx
     environment:
       - TERM=xterm-256color
     links:
-      - php7
+      - php
     networks:
       - alpazzo
     ports:
@@ -26,11 +25,11 @@ services:
     depends_on:
       - mariadb
 
-  php7:
+  php:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: alpazzo-php7
+    container_name: alpazzo-php
     environment:
       - TERM=xterm-256color
     networks:
@@ -42,7 +41,7 @@ services:
       - mariadb
 
   mariadb:
-    image: mariadb:10.4
+    image: mariadb:11
     container_name: alpazzo-mariadb
     environment:
       - "MYSQL_ROOT_PASSWORD=password"
@@ -54,14 +53,6 @@ services:
     restart: unless-stopped
     # volumes:
     #   - ./database:/var/lib/mysql
-
-  adminer:
-    image: adminer
-    restart: unless-stopped
-    ports:
-      - 8080:8080
-    depends_on:
-      - mariadb
 
 # Build diretives for Docker Network Bridging
 networks:
